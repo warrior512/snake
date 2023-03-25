@@ -19,10 +19,6 @@ def create_apple(snake_coordinates):
     return randint(0, WIN_SIZE - 1) * B_SIZE, randint(0, WIN_SIZE - 1) * B_SIZE
 
 
-def game_over():
-    print('game over')
-
-
 def main():
     pygame.init()
     fps = 6
@@ -41,23 +37,23 @@ def main():
     screen = pygame.display.set_mode((WIN_SIZE * B_SIZE, WIN_SIZE * B_SIZE))
     pygame.display.update()
     pygame.display.set_caption('Snake')
-    apple_image = pygame.image.load('apple.png')
-    fon_image = pygame.image.load('fon.jpg')
+    apple_image = pygame.image.load('img/apple.png')
+    fon_image = pygame.image.load('img/fon.jpg')
 
-    img_body_horizontal = pygame.image.load('body_horizontal.png')
-    img_body_vertical = pygame.image.load('body_vertical.png')
-    img_body_left_top = pygame.image.load('body_left_top.png')
-    img_body_right_top = pygame.image.load('body_right_top.png')
-    img_body_left_bot = pygame.image.load('body_left_bot.png')
-    img_body_right_bot = pygame.image.load('body_right_bot.png')
-    img_head_up = pygame.image.load('head_up.png')
-    img_head_right = pygame.image.load('head_right.png')
-    img_head_down = pygame.image.load('head_down.png')
-    img_head_left = pygame.image.load('head_left.png')
-    img_tail_up = pygame.image.load('tail_up.png')
-    img_tail_right = pygame.image.load('tail_right.png')
-    img_tail_down = pygame.image.load('tail_down.png')
-    img_tail_left = pygame.image.load('tail_left.png')
+    img_body_horizontal = pygame.image.load('img/body_horizontal.png')
+    img_body_vertical = pygame.image.load('img/body_vertical.png')
+    img_body_left_top = pygame.image.load('img/body_left_top.png')
+    img_body_right_top = pygame.image.load('img/body_right_top.png')
+    img_body_left_bot = pygame.image.load('img/body_left_bot.png')
+    img_body_right_bot = pygame.image.load('img/body_right_bot.png')
+    img_head_up = pygame.image.load('img/head_up.png')
+    img_head_right = pygame.image.load('img/head_right.png')
+    img_head_down = pygame.image.load('img/head_down.png')
+    img_head_left = pygame.image.load('img/head_left.png')
+    img_tail_up = pygame.image.load('img/tail_up.png')
+    img_tail_right = pygame.image.load('img/tail_right.png')
+    img_tail_down = pygame.image.load('img/tail_down.png')
+    img_tail_left = pygame.image.load('img/tail_left.png')
 
     quit_game = False
     while not quit_game:
