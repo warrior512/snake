@@ -2,8 +2,6 @@ import pygame
 from random import randint
 
 
-
-
 B_SIZE = 40
 WIN_SIZE = 25
 RED = (255, 0, 0)
