@@ -21,14 +21,14 @@ def create_apple(snake_coordinates):
 
 def main():
     pygame.init()
-    fps = 6
+    fps = 60
     score = 0
     speed = 1
     font_info = pygame.font.SysFont('Arial', 26, bold=True)
     font_game_over = pygame.font.SysFont('Arial', 60, bold=True)
 
     snake = create_snake()
-    apple = create_apple(snake)
+    # apple = create_apple(snake)
     snake_length = 1
     dx, dy = 1, 0
     keys = {'up': True, 'right': False, 'down': True, 'left': True}
@@ -38,7 +38,22 @@ def main():
     pygame.display.update()
     pygame.display.set_caption('Snake')
     apple_image = pygame.image.load('img/apple.png')
+    arbuz_image = pygame.image.load('img/arbuz.png')
+
+    banan_image = pygame.image.load('img/banan.png')
+    cherry_image = pygame.image.load('img/cherry.png')
+    green_apple_image = pygame.image.load('img/green_apple.png')
+    grusha_image = pygame.image.load('img/grusha.png')
+    tikva_image = pygame.image.load('img/tikva.png')
+
     fon_image = pygame.image.load('img/fon.jpg')
+
+    fruits = [apple_image, arbuz_image, banan_image, cherry_image, green_apple_image, grusha_image, tikva_image]
+    fruits_count = 500
+    fruits_spawn = []
+    for _ in range(fruits_count):
+        ind = randint(0, len(fruits) - 1)
+        fruits_spawn.append([fruits[ind], create_apple(snake)])
 
     img_body_horizontal = pygame.image.load('img/body_horizontal.png')
     img_body_vertical = pygame.image.load('img/body_vertical.png')
@@ -50,28 +65,77 @@ def main():
     img_head_right = pygame.image.load('img/head_right.png')
     img_head_down = pygame.image.load('img/head_down.png')
     img_head_left = pygame.image.load('img/head_left.png')
+    img_head_up_left = pygame.image.load('img/head_up_left.png')
+    img_head_up_right = pygame.image.load('img/head_up_right.png')
+
+    img_head_right_left = pygame.image.load('img/head_right_left.png')
+    img_head_right_right = pygame.image.load('img/head_right_right.png')
+
+    img_head_down_left = pygame.image.load('img/head_down_left.png')
+    img_head_down_right = pygame.image.load('img/head_down_right.png')
+
+    img_head_left_left = pygame.image.load('img/head_left_left.png')
+    img_head_left_right = pygame.image.load('img/head_left_right.png')
+
     img_tail_up = pygame.image.load('img/tail_up.png')
     img_tail_right = pygame.image.load('img/tail_right.png')
     img_tail_down = pygame.image.load('img/tail_down.png')
     img_tail_left = pygame.image.load('img/tail_left.png')
+    img_single_up = pygame.image.load('img/single_up.png')
+    img_single_right = pygame.image.load('img/single_right.png')
+    img_single_down = pygame.image.load('img/single_down.png')
+    img_single_left = pygame.image.load('img/single_left.png')
+
+    scr = 0
 
     quit_game = False
     while not quit_game:
         screen.fill(pygame.Color('black'))
         screen.blit(fon_image, (0, 0))
 
+
+
         sprites = []
         snake_coords = snake[::-1]
         for coords in snake_coords:
-            if coords == snake_coords[0]:
+            if coords == snake_coords[0] and len(snake_coords) > 1:
+                if coords[0] == snake_coords[1][0] and coords[1] + 1 * B_SIZE == snake_coords[1][1]:
+                    if dx == 0 and dy == -1:
+                        sprites.append((img_head_up, coords))
+                    elif dx == -1 and dy == 0:
+                        sprites.append((img_head_up_left, coords))
+                    elif dx == 1 and dy == 0:
+                        sprites.append((img_head_up_right, coords))
+                elif coords[0] - 1 * B_SIZE == snake_coords[1][0] and coords[1] == snake_coords[1][1]:
+                    if dx == 1 and dy == 0:
+                        sprites.append((img_head_right, coords))
+                    elif dx == 0 and dy == -1:
+                        sprites.append((img_head_right_left, coords))
+                    elif dx == 0 and dy == 1:
+                        sprites.append((img_head_right_right, coords))
+                elif coords[0] == snake_coords[1][0] and coords[1] - 1 * B_SIZE == snake_coords[1][1]:
+                    if dx == 0 and dy == 1:
+                        sprites.append((img_head_down, coords))
+                    elif dx == -1 and dy == 0:
+                        sprites.append((img_head_down_right, coords))
+                    elif dx == 1 and dy == 0:
+                        sprites.append((img_head_down_left, coords))
+                elif coords[0] + 1 * B_SIZE == snake_coords[1][0] and coords[1] == snake_coords[1][1]:
+                    if dx == -1 and dy == 0:
+                        sprites.append((img_head_left, coords))
+                    elif dx == 0 and dy == 1:
+                        sprites.append((img_head_left_left, coords))
+                    elif dx == 0 and dy == -1:
+                        sprites.append((img_head_left_right, coords))
+            if coords == snake_coords[0] and len(snake_coords) == 1:
                 if dx == 0 and dy == -1:
-                    sprites.append((img_head_up, coords))
+                    sprites.append((img_single_up, coords))
                 elif dx == 1 and dy == 0:
-                    sprites.append((img_head_right, coords))
+                    sprites.append((img_single_right, coords))
                 elif dx == 0 and dy == 1:
-                    sprites.append((img_head_down, coords))
+                    sprites.append((img_single_down, coords))
                 elif dx == -1 and dy == 0:
-                    sprites.append((img_head_left, coords))
+                    sprites.append((img_single_left, coords))
             if len(snake_coords) > 2 and coords != snake_coords[-1] and coords != snake_coords[0]:
                 cur_index = snake_coords.index(coords)
                 if snake_coords[cur_index + 1][0] == coords[0] and snake_coords[cur_index - 1][0] == coords[0]:
@@ -104,22 +168,32 @@ def main():
             sprite, coordinates = sprite
             screen.blit(sprite, coordinates)
 
-        screen.blit(apple_image, apple)
+        for fruit in fruits_spawn:
+            img, coords = fruit
+            screen.blit(img, coords)
+
+        # screen.blit(apple_image, apple)
         render_score = font_info.render(f'SCORE: {score}', 1, pygame.Color('orange'))
         render_speed = font_info.render(f'SPEED: {speed}', 1, pygame.Color('orange'))
         screen.blit(render_score, (5, 5))
         screen.blit(render_speed, (5, 50))
 
-        snake.append((snake[-1][0] + dx * B_SIZE, snake[-1][1] + dy * B_SIZE))
-        snake = snake[-snake_length:]
+        if scr % 12 == 0:
+            snake.append((snake[-1][0] + dx * B_SIZE, snake[-1][1] + dy * B_SIZE))
+            snake = snake[-snake_length:]
 
-        if snake[-1] == apple:
-            apple = create_apple(snake)
-            snake_length += 1
-            score += 1
-            if score % 5 == 0:
-                fps += 1
-                speed += 1
+        # if snake[-1] == apple:
+        for fruit in fruits_spawn:
+            if snake[-1] == fruit[1]:
+                ind = fruits_spawn.index(fruit)
+                fruits_spawn.pop(ind)
+                new_fruit = randint(0, len(fruits) - 1)
+                fruits_spawn.append([fruits[new_fruit], create_apple(snake)])
+                snake_length += 1
+                score += 1
+                # if score % 5 == 0:
+                #     fps += 1
+                #     speed += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -139,7 +213,7 @@ def main():
                     keys = {'up': True, 'right': True, 'down': True, 'left': False}
         pygame.display.flip()
         clock.tick(fps)
-
+        scr += 1
         if snake[-1][0] < 0 or snake[-1][0] > (WIN_SIZE - 1) * B_SIZE or snake[-1][1] < 0 \
                 or snake[-1][1] > (WIN_SIZE - 1) * B_SIZE or len(snake) != len(set(snake)):
             while not quit_game:
