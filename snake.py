@@ -4,8 +4,6 @@ from random import randint
 
 B_SIZE = 40
 WIN_SIZE = 25
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 
 
 def create_snake():
@@ -89,6 +87,7 @@ def main():
     screen_coords_2 = [-1000, -1000]
     screen_coords_3 = [-1000, -1000]
 
+    game_started = False
     quit_game = False
     while not quit_game:
         screen.fill(pygame.Color('black'))
@@ -198,7 +197,6 @@ def main():
             screen_coords_1[0] += 3
             screen_coords_2[0] += 1
             screen_coords_3[0] += 2
-        pygame.display.flip()
 
         for fruit in fruits_spawn:
             if snake[-1] == fruit[1]:
@@ -217,20 +215,39 @@ def main():
             if event.type == pygame.QUIT:
                 quit_game = True
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and keys['down']:
+                if event.key == pygame.K_UP and keys['up']:
                     dx, dy = 0, -1
-                    keys = {'up': False, 'right': True, 'down': True, 'left': True}
-                elif event.key == pygame.K_RIGHT and keys['left']:
-                    dx, dy = 1, 0
-                    keys = {'up': True, 'right': False, 'down': True, 'left': True}
-                elif event.key == pygame.K_DOWN and keys['up']:
-                    dx, dy = 0, 1
                     keys = {'up': True, 'right': True, 'down': False, 'left': True}
-                elif event.key == pygame.K_LEFT and keys['right']:
-                    dx, dy = -1, 0
+                elif event.key == pygame.K_RIGHT and keys['right']:
+                    dx, dy = 1, 0
                     keys = {'up': True, 'right': True, 'down': True, 'left': False}
+                elif event.key == pygame.K_DOWN and keys['down']:
+                    dx, dy = 0, 1
+                    keys = {'up': False, 'right': True, 'down': True, 'left': True}
+                elif event.key == pygame.K_LEFT and keys['left']:
+                    dx, dy = -1, 0
+                    keys = {'up': True, 'right': False, 'down': True, 'left': True}
+                elif event.key == pygame.K_SPACE:
+                    game_started = False
 
         pygame.display.flip()
+
+        while game_started + quit_game == 0:
+
+            b_ground = pygame.Surface((WIN_SIZE * B_SIZE, WIN_SIZE * B_SIZE))  # the size of your rect
+            b_ground.set_alpha(5)  # alpha level
+            b_ground.fill((160, 160, 160))  # this fills the entire surface
+            screen.blit(b_ground, (0, 0))
+
+            render_start = font_info.render('-- press SPASE to START --', 1, pygame.Color('orange'))
+            screen.blit(render_start, (WIN_SIZE * B_SIZE // 3, WIN_SIZE * B_SIZE // 2))
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    game_started = True
+                elif event.type == pygame.QUIT:
+                    quit_game = True
+
         clock.tick(fps)
         scr += 1
 
@@ -247,6 +264,7 @@ def main():
                         if event.key == pygame.K_SPACE:
                             pygame.quit()
                             main()
+
     pygame.quit()
 
 
