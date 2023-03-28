@@ -27,10 +27,6 @@ def create_apple(snake_coordinates):
     return randint(0, WIN_SIZE - 1) * B_SIZE, randint(0, WIN_SIZE - 1) * B_SIZE
 
 
-def main_menu():
-    pass
-
-
 def get_level_settings(level):
     with open('levels.json', 'r') as json_file:
         settings = json.load(json_file)
@@ -75,7 +71,6 @@ def main(level):
     settings = get_level_settings(level)
     images = get_image_objects(settings)
 
-    # fonts
     font_arial_26 = pygame.font.SysFont('Arial', 26, bold=True)
     font_arial_60 = pygame.font.SysFont('Arial', 60, bold=True)
 
@@ -83,8 +78,6 @@ def main(level):
     keys = {'up': True, 'right': False, 'down': True, 'left': True}
     score = 0
     speed = 1
-
-    main_menu()
 
     food_images = get_foods_images(images['food'])
     amount_of_food = settings['amount_of_food']
