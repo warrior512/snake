@@ -1,0 +1,8 @@
+{
+  "space": {
+    "background": "img/backgrounds/space",
+    "skin": "img/skins/default",
+    "food": "img/food/fruits",
+    "amount_of_food": 5
+  }
+}
